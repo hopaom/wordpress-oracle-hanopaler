@@ -127,24 +127,8 @@ ubuntu@wordpress-server:~$
 
 ## 5. 자동 설치 스크립트 실행
 
-### 방법 1: 한 줄 실행 (권장)
 ```bash
-curl -sL https://raw.githubusercontent.com/USERNAME/oracle-wordpress/main/wp-install.sh | sudo bash
-```
-
-> ⚠️ `USERNAME`을 본인의 GitHub 사용자명으로 변경하세요.
-
-### 방법 2: 다운로드 후 실행 (내용 확인용)
-```bash
-# 다운로드
-curl -O https://raw.githubusercontent.com/USERNAME/oracle-wordpress/main/wp-install.sh
-
-# 내용 확인
-cat wp-install.sh
-
-# 실행
-chmod +x wp-install.sh
-sudo ./wp-install.sh
+curl -sL https://raw.githubusercontent.com/hopaom/wordpress-oracle-hanopaler/main/wp-install.sh | sudo bash
 ```
 
 ### 설치 항목
@@ -240,7 +224,7 @@ sudo nano /etc/nginx/sites-available/wordpress
 ```nginx
 server {
     listen 80;
-    server_name your-domain.com www.your-domain.com;
+    server_name blog.hanopaler.com www.blog.hanopaler.com;
     root /var/www/wordpress;
     index index.php index.html;
 
@@ -279,7 +263,7 @@ server {
 }
 ```
 
-> ⚠️ `your-domain.com`을 실제 도메인으로 변경하세요.
+> ⚠️ 실제 도메인으로 변경하세요.
 
 > ⚠️ PHP 버전 확인: `php -v` 실행 후 버전이 8.3이면 `php8.1-fpm.sock`을 `php8.3-fpm.sock`으로 변경
 
@@ -321,7 +305,7 @@ nslookup your-domain.com
 DNS 전파 완료 후 실행:
 
 ```bash
-sudo certbot --nginx -d your-domain.com -d www.your-domain.com
+sudo certbot --nginx -d blog.hanopaler.com -d www.blog.hanopaler.com
 ```
 
 | 질문 | 답변 |
