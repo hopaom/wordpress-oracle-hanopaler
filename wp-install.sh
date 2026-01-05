@@ -114,8 +114,20 @@ fi
 # 7. 방화벽 설정
 # ============================================
 print_step "7/8 방화벽 설정 (80, 443 포트)"
-iptables -I INPUT 6 -m state --state NEW -p tcp --dport 80 -j ACCEPT
-iptables -I INPUT 6 -m state --state NEW -p tcp --dport 443 -j ACCEPT
+
+# REJECT 규칙 번호 찾기
+REJECT_LINE=$(iptables -L INPUT --line-numbers -n | grep -i reject | awk '{print $1}')
+
+if [ -n "$REJECT_LINE" ]; then
+    # REJECT 앞에 삽입
+    iptables -I INPUT $REJECT_LINE -m state --state NEW -p tcp --dport 80 -j ACCEPT
+    iptables -I INPUT $REJECT_LINE -m state --state NEW -p tcp --dport 443 -j ACCEPT
+else
+    # REJECT 없으면 그냥 추가
+    iptables -A INPUT -m state --state NEW -p tcp --dport 80 -j ACCEPT
+    iptables -A INPUT -m state --state NEW -p tcp --dport 443 -j ACCEPT
+fi
+
 netfilter-persistent save
 echo "✓ 방화벽 설정 완료"
 
