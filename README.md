@@ -221,10 +221,12 @@ sudo nano /etc/nginx/sites-available/wordpress
 
 아래 내용 붙여넣기 (도메인 부분 수정):
 
+> ⚠️ PHP 버전 확인: `php -v` 실행 후 버전이 8.3이면 `php8.1-fpm.sock`을 `php8.3-fpm.sock`으로 변경
+
 ```nginx
 server {
     listen 80;
-    server_name blog.hanopaler.com www.blog.hanopaler.com;
+    server_name blog.hanopaler.com;
     root /var/www/wordpress;
     index index.php index.html;
 
@@ -265,8 +267,6 @@ server {
 
 > ⚠️ 실제 도메인으로 변경하세요.
 
-> ⚠️ PHP 버전 확인: `php -v` 실행 후 버전이 8.3이면 `php8.1-fpm.sock`을 `php8.3-fpm.sock`으로 변경
-
 저장 후 활성화:
 
 ```bash
@@ -275,7 +275,12 @@ sudo rm /etc/nginx/sites-enabled/default
 sudo nginx -t
 sudo systemctl restart nginx
 ```
+systemd 데몬을 리로드 경고시:
 
+```bash
+sudo systemctl daemon-reload
+sudo systemctl restart nginx
+```
 ---
 
 ## 7. 도메인 및 HTTPS 설정
@@ -286,8 +291,7 @@ sudo systemctl restart nginx
 
 | Type | Name | Value | TTL |
 |------|------|-------|-----|
-| A | @ | [서버 Public IP] | 300 |
-| A | www | [서버 Public IP] | 300 |
+| A | blog | [서버 Public IP] | 300 |
 
 ### 7.2 DNS 전파 확인
 
